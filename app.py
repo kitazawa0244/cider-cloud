@@ -108,6 +108,31 @@ def save_email_log_xlsx(email, status, error_msg=''):
         ws.column_dimensions[get_column_letter(column_cells[0].column)].width = length + 2
     wb.save(log_file)
 
+
+#出庫詳細データ振り分け用の関数
+def 振り分け処理(row, 出庫情報シート, sheets):
+    出庫ID, 商品名, 数量 = row
+
+    # 出庫IDから出庫先を取得
+    出庫情報一覧 = 出庫情報シート.get_all_values()
+    出庫先 = None
+    for info_row in 出庫情報一覧[1:]:  # ヘッダーを除く
+        if info_row[0] == 出庫ID:
+            出庫先 = info_row[2]
+            break
+
+    if 出庫先 is None:
+        print(f"出庫ID {出庫ID} に対応する出庫先が見つかりませんでした")
+        return
+
+    # 出庫先に応じて振り分けて記録
+    振り分けデータ = [出庫ID, 商品名, 数量, 出庫先]
+    if 出庫先 == "取引先への出荷":
+        sheets["卸"].append_row(振り分けデータ)
+    elif 出庫先 in ["通販", "店頭販売", "課税出荷（イベント等）", "持ち出し"]:
+        sheets["店頭等"].append_row(振り分けデータ)
+
+
 # --- メール送信用のルーティング ---
 @app.route('/email', methods=['GET', 'POST'])
 def send_email_page():
@@ -247,11 +272,23 @@ def register():
         担当者 = request.form['staff']
         取引先 = request.form.get('client', '')
 
-        _, 出庫情報シート, 出庫詳細シート = connect_sheets()
+        gc = gspread.authorize(ServiceAccountCredentials.from_json_keyfile_dict(
+            json.load(open(os.environ['GOOGLE_CREDENTIALS_PATH'])),
+            ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
+        ))
+        workbook = gc.open('【開発用】シードル出庫台帳')
+
+        出庫情報シート = workbook.worksheet('出庫情報')
+        出庫詳細シート = workbook.worksheet('出庫詳細')
+        出庫詳細_卸シート = workbook.worksheet('出庫詳細（卸）')
+        出庫詳細_直販シート = workbook.worksheet('出庫詳細（店頭、通販等）')
+
         出庫ID = generate_unique_id(出庫情報シート)
 
+        # 出庫情報を書き込み
         出庫情報シート.append_row([出庫ID, 出庫日, 出庫先, 取引先, 担当者])
 
+        # 商品データの収集
         details_to_append = []
         for i in range(1, 6):
             商品名 = request.form.get(f'item{i}')
@@ -259,8 +296,15 @@ def register():
             if 商品名 and 数量:
                 details_to_append.append([出庫ID, 商品名, 数量])
 
+        # 出庫詳細シート（共通）に書き込み
         if details_to_append:
             出庫詳細シート.append_rows(details_to_append, value_input_option='USER_ENTERED')
+
+            # 出庫先に応じて詳細を別シートにも分岐保存
+            if 出庫先 == '取引先への出荷':
+                出庫詳細_卸シート.append_rows(details_to_append, value_input_option='USER_ENTERED')
+            else:
+                出庫詳細_直販シート.append_rows(details_to_append, value_input_option='USER_ENTERED')
 
         return render_template(
             'success.html',
