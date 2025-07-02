@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head><title>送信ログ</title></head>
+<body>
+    <h1>送信ログ</h1>
+    <table border="1">
+        <tr>
+            {% for col in header %}
+                <th>{{ col }}</th>
+            {% endfor %}
+        </tr>
+        {% for row in logs %}
+            <tr>
+                {% for cell in row %}
+                    <td>{{ cell }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
