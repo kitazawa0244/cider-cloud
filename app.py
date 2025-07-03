@@ -48,13 +48,13 @@ def connect_sheets():
     creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
     client = gspread.authorize(creds)
     sheet = client.open('【開発用】シードル出庫台帳')
-    return sheet.worksheet('在庫一覧'),  sheet.worksheet('出庫情報'), sheet.worksheet('出庫詳細')
+    return sheet.worksheet('集計用'),  sheet.worksheet('出庫情報'), sheet.worksheet('出庫詳細')
 
 
 # --- メール送信用関数群 ---
 def get_available_items():
-    在庫一覧シート, _, _ = connect_sheets()
-    data = 在庫一覧シート.get_all_records()
+    集計用シート, _, _ = connect_sheets()
+    data = 集計用シート.get_all_records()
     available = [row for row in data if isinstance(row['現在庫'], int) and row['現在庫'] > 0]
     return available
 
