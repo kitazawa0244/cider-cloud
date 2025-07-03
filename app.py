@@ -13,12 +13,15 @@ import re
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import json
+from email.mime.text import MIMEText
+import smtplib
 from dotenv import load_dotenv
 from email.mime.text import MIMEText
 import smtplib
 
 load_dotenv()
 
+>>>>>>> upstream/main
 app = Flask(__name__)
 app.secret_key = "your-secret-key"
 app.config['UPLOAD_FOLDER'] = 'uploads'

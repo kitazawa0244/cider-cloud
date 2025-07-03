@@ -1,0 +1,111 @@
+#drop-zone {
+    border: 2px dashed #007bff;
+    background-color: #f8f9fa;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+#drop-zone.dragover {
+    background-color: #e9ecef;
+    border-color: #0056b3;
+}
+
+#message .alert-success {
+    color: #0f5132;
+    background-color: #d1e7dd;
+    border-color: #badbcc;
+}
+
+#message .alert-danger {
+    color: #842029;
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+}
+
+/* static/style.css */
+
+/* デフォルト（PC・タブレット） */
+#csv-upload-section {
+    padding: 1rem;
+    background-color: #f9f9f9;
+}
+
+/* スマホ画面では非表示 */
+@media screen and (max-width: 768px) {
+    #csv-upload-section {
+        display: none;
+    }
+}
+
+/* PC表示（768px以上）ではリンクを横並び＋区切り線表示 */
+@media screen and (min-width: 769px) {
+    #main-nav a {
+        display: inline;
+        text-decoration: none;
+        margin: 0 8px;
+    }
+
+    #main-nav a::after {
+        content: "|";
+        margin-left: 8px;
+        color: #999;
+    }
+
+    /* 最後のリンクには区切り線を表示しない */
+    #main-nav a:last-child::after {
+        content: "";
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #main-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
+    }
+
+    #main-nav a {
+        display: block;
+        padding: 15px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 1.2rem;
+        text-align: center;
+    }
+
+    #main-nav a:hover {
+        background-color: #0056b3;
+    }
+
+    /* ✅ この部分が "main-button" のサイズ強調 */
+    #main-nav a.main-button {
+        font-size: 1.8rem;
+        font-weight: bold;
+        padding: 25px;
+        background-color: #28a745;  /* 緑に変更したい場合など */
+    }
+
+    #main-nav a.main-button:hover {
+        background-color: #1e7e34;
+    }
+}
+
+/* CSSファイル (style.css) に追記 */
+.pc-title {
+    display: block;
+}
+.mobile-title {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    .pc-title {
+        display: none;
+    }
+    .mobile-title {
+        display: block;
+    }
+}
+

@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>在庫管理システム</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
     <div>
-        <h1>在庫管理システム トップページ</h1>
+        <h1 class="pc-title">在庫管理システム トップページ</h1>
+        <h1 class="mobile-title">どこへなんぼ</h1>
         
         <nav>
-            <a href="{{ url_for('register') }}">➕出庫情報の手動登録</a>
+            <a href="{{ url_for('register') }}" class="main-button">➕出庫情報の手動登録</a>
             |
             <a href="{{ url_for('list_data') }}">📋出庫情報一覧 (スプレッドシート)</a>
             |
@@ -21,8 +23,7 @@
         </nav>
 
         <hr>
-
-        <div>
+        <div id="csv-upload-section"> 
             <h2>店頭販売CSVデータ アップロード</h2>
             <p>スマレジから出力した売上CSVファイル (例: `20240521-uriage.csv`) をアップロードしてください。</p>
             
