@@ -21,7 +21,7 @@ import smtplib
 
 load_dotenv()
 
->>>>>>> upstream/main
+
 app = Flask(__name__)
 app.secret_key = "your-secret-key"
 app.config['UPLOAD_FOLDER'] = 'uploads'
