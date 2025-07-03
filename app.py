@@ -12,6 +12,8 @@ import re
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import json
+from email.mime.text import MIMEText
+import smtplib
 from dotenv import load_dotenv
 
 load_dotenv()

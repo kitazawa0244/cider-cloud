@@ -12,11 +12,15 @@
         <h1 class="pc-title">在庫管理システム トップページ</h1>
         <h1 class="mobile-title">どこへなんぼ</h1>
         
-    <nav id="main-nav">
-    <a href="{{ url_for('register') }}" class="main-button">出庫情報の手動登録</a>
-    <a href="{{ url_for('list_data') }}">出庫情報一覧 (スプレッドシート)</a>
-    <a href="{{ url_for('show_data') }}">アップロード済みデータ確認 (DB)</a>
-    </nav>
+        <nav>
+            <a href="{{ url_for('register') }}" class="main-button">➕出庫情報の手動登録</a>
+            |
+            <a href="{{ url_for('list_data') }}">📋出庫情報一覧 (スプレッドシート)</a>
+            |
+            <a href="/email">📧 在庫情報メール送信</a>
+            |
+            <a href="{{ url_for('show_data') }}">📄アップロード済みデータ確認 (DB)</a>
+        </nav>
 
         <hr>
         <div id="csv-upload-section"> 
