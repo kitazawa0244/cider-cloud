@@ -1,53 +1,71 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>出庫登録フォーム</title>
-</head>
-<body>
-    <h1>出庫登録フォーム</h1>
-    <form method="POST">
-        <label>出庫日: <input type="date" name="date" required></label><br><br>
+{% extends "base.html" %}
 
-        <label>出庫先:
-            <select name="destination" required>
-                {% for option in shukkosaki_options %}
-                    <option value="{{ option }}">{{ option }}</option>
+{% block title %}出庫登録フォーム{% endblock %}
+
+{% block content %}
+  <h1 class="mb-4">出庫登録フォーム</h1>
+
+  <form method="POST">
+    <div class="mb-3">
+      <label for="date" class="form-label">出庫日</label>
+      <input type="date" name="date" id="date" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="destination" class="form-label">出庫先</label>
+      <select name="destination" id="destination" class="form-select" required>
+        {% for option in shukkosaki_options %}
+          <option value="{{ option }}">{{ option }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="client" class="form-label">取引先</label>
+      <input type="text" name="client" id="client" class="form-control">
+    </div>
+
+    <div class="mb-3">
+      <label for="staff" class="form-label">担当者</label>
+      <select name="staff" id="staff" class="form-select" required>
+        {% for option in staff_options %}
+          <option value="{{ option }}">{{ option }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <h3 class="mt-4">出庫商品（最大5件）</h3>
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>商品名</th>
+            <th>数量</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in range(1, 6) %}
+          <tr>
+            <td>
+              <select name="item{{ i }}" class="form-select">
+                <option value="">-- 選択してください --</option>
+                {% for product in product_options %}
+                  <option value="{{ product }}">{{ product }}</option>
                 {% endfor %}
-            </select>
-        </label><br><br>
+              </select>
+            </td>
+            <td>
+              <input type="number" name="qty{{ i }}" class="form-control" min="1">
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
 
-        <label>取引先: <input type="text" name="client"></label><br><br>
-
-        <label>担当者:
-            <select name="staff" required>
-                {% for option in staff_options %}
-                    <option value="{{ option }}">{{ option }}</option>
-                {% endfor %}
-            </select>
-        </label><br><br>
-
-        <h3>出庫商品（最大5件）</h3>
-        <table border="1">
-            <tr><th>商品名</th><th>数量</th></tr>
-            {% for i in range(1, 6) %}
-            <tr>
-                <td>
-                    <select name="item{{ i }}">
-                        <option value="">-- 選択してください --</option>
-                        {% for product in product_options %}
-                            <option value="{{ product }}">{{ product }}</option>
-                        {% endfor %}
-                    </select>
-                </td>
-                <td><input type="number" name="qty{{ i }}" min="1"></td>
-            </tr>
-            {% endfor %}
-        </table>
-
-        <br>
-        <button type="submit">出庫登録</button>
-        <button type="button" onclick="window.location.href='/'">トップ画面に戻る</button>
-    </form>
-</body>
-</html>
+    <div class="mt-4">
+      <button type="submit" class="btn btn-primary me-2">出庫登録</button>
+      <a href="/" class="btn btn-secondary">トップ画面に戻る</a>
+    </div>
+  </form>
+{% endblock %}
