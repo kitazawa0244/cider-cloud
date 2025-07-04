@@ -1,27 +1,38 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>出庫詳細の編集</title>
-</head>
-<body>
-    <h1>出庫ID: {{ 出庫ID }} の出庫詳細を編集</h1>
+{% extends "base.html" %}
 
-    <form method="POST">
-        <table border="1">
-            <tr>
-                <th>商品名</th><th>数量</th>
-            </tr>
-            {% for row in 出庫詳細 %}
-            <tr>
-                <td><input type="text" name="item{{ loop.index0 }}" value="{{ row.商品名 }}"></td>
-                <td><input type="number" name="qty{{ loop.index0 }}" value="{{ row.数量 }}"></td>
-            </tr>
-            {% endfor %}
-        </table>
-        <button type="submit">更新する</button>
-    </form>
+{% block title %}出庫詳細の編集{% endblock %}
 
-    <p><a href="{{ url_for('edit', shukko_id=出庫ID) }}">← 出庫情報の編集に戻る</a></p>
-</body>
-</html>
+{% block content %}
+  <h1 class="mb-4">出庫ID: {{ 出庫ID }} の出庫詳細を編集</h1>
+
+  <form method="POST">
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>商品名</th>
+            <th>数量</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in 出庫詳細 %}
+          <tr>
+            <td>
+              <input type="text" name="item{{ loop.index0 }}" value="{{ row.商品名 }}" class="form-control">
+            </td>
+            <td>
+              <input type="number" name="qty{{ loop.index0 }}" value="{{ row.数量 }}" class="form-control" min="1">
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">更新する</button>
+  </form>
+
+  <div class="mt-4">
+    <a href="{{ url_for('edit', shukko_id=出庫ID) }}" class="btn btn-link">← 出庫情報の編集に戻る</a>
+  </div>
+{% endblock %}

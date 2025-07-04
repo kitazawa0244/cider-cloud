@@ -1,38 +1,42 @@
-<!-- templates/edit.html -->
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>出庫情報の編集</title>
-</head>
-<body>
-    <h1>出庫情報の編集</h1>
+{% extends "base.html" %}
 
-    <form method="POST">
-        <p><strong>出庫ID：</strong>{{ 出庫ID }}</p>
+{% block title %}出庫情報の編集{% endblock %}
 
-        <p>
-            出庫日：<input type="date" name="date" value="{{ 出庫情報[1] }}">
-        </p>
-        <p>
-            出庫先：<input type="text" name="destination" value="{{ 出庫情報[2] }}">
-        </p>
-        <p>
-            取引先：<input type="text" name="client" value="{{ 出庫情報[3] }}">
-        </p>
-        <p>
-            担当者：<input type="text" name="staff" value="{{ 出庫情報[4] }}">
-        </p>
+{% block content %}
+  <h1 class="mb-4">出庫情報の編集</h1>
 
-        <button type="submit">保存する</button>
-    </form>
+  <form method="POST">
+    <div class="mb-3">
+      <label class="form-label"><strong>出庫ID：</strong> {{ 出庫ID }}</label>
+    </div>
 
-    <p>
-        <a href="{{ url_for('edit_detail', shukko_id=出庫ID) }}">
-            ▶ 出庫詳細の編集はこちら
-        </a>
-    </p>
+    <div class="mb-3">
+      <label for="date" class="form-label">出庫日</label>
+      <input type="date" id="date" name="date" class="form-control" value="{{ 出庫情報[1] }}">
+    </div>
 
-    <p><a href="{{ url_for('list_data') }}">← 一覧に戻る</a></p>
-</body>
-</html>
+    <div class="mb-3">
+      <label for="destination" class="form-label">出庫先</label>
+      <input type="text" id="destination" name="destination" class="form-control" value="{{ 出庫情報[2] }}">
+    </div>
+
+    <div class="mb-3">
+      <label for="client" class="form-label">取引先</label>
+      <input type="text" id="client" name="client" class="form-control" value="{{ 出庫情報[3] }}">
+    </div>
+
+    <div class="mb-3">
+      <label for="staff" class="form-label">担当者</label>
+      <input type="text" id="staff" name="staff" class="form-control" value="{{ 出庫情報[4] }}">
+    </div>
+
+    <button type="submit" class="btn btn-primary">保存する</button>
+  </form>
+
+  <div class="mt-4">
+    <a href="{{ url_for('edit_detail', shukko_id=出庫ID) }}" class="btn btn-outline-secondary me-3">
+      ▶ 出庫詳細の編集はこちら
+    </a>
+    <a href="{{ url_for('list_data') }}" class="btn btn-link">← 一覧に戻る</a>
+  </div>
+{% endblock %}

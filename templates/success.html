@@ -1,19 +1,18 @@
-<!-- templates/success.html -->
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>完了</title>
-    <script>
-        window.onload = function() {
-            alert("{{ message }}");
-            setTimeout(function() {
-                window.location.href = "{{ redirect_url }}";
-            }, 1000);
-        };
-    </script>
-</head>
-<body>
-    <p>{{ message }}。自動的にページが移動します...</p>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}完了{% endblock %}
+
+{% block content %}
+  <div class="alert alert-success mt-5" role="alert">
+    {{ message }}。自動的にページが移動します...
+  </div>
+
+  <script>
+    window.onload = function() {
+      alert("{{ message }}");
+      setTimeout(function() {
+        window.location.href = "{{ redirect_url }}";
+      }, 1000);
+    };
+  </script>
+{% endblock %}

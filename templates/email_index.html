@@ -1,26 +1,34 @@
-<!DOCTYPE html>
-<html>
-<head><title>在庫通知メール</title></head>
-<body>
-    <h1>現在の在庫一覧</h1>
-    <ul>
-        {% for item in items %}
-            <li>{{ item['商品名'] }}：{{ item['現在庫'] }}本</li>
+{% extends "base.html" %}
+
+{% block title %}在庫通知メール{% endblock %}
+
+{% block content %}
+  <h1 class="mb-4">現在の在庫一覧</h1>
+
+  <ul class="list-group mb-4">
+    {% for item in items %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        {{ item['商品名'] }}
+        <span class="badge bg-primary rounded-pill">{{ item['現在庫'] }} 本</span>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <form method="POST">
+    <div class="mb-3">
+      <label for="emails" class="form-label">送信先メールアドレス（複数OK・カンマ区切り）</label>
+      <textarea name="emails" id="emails" class="form-control" rows="5" placeholder="例：aaa@example.com, bbb@example.com"></textarea>
+    </div>
+    <button type="submit" class="btn btn-success">送信する</button>
+  </form>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="mt-4">
+        {% for category, message in messages %}
+          <div class="alert alert-danger" role="alert">{{ message }}</div>
         {% endfor %}
-    </ul>
-    <form method="POST">
-        <label>送信先メールアドレス（複数OK・カンマ区切り）</label><br>
-        <textarea name="emails" rows="5" cols="60"></textarea><br><br>
-        <button type="submit">送信する</button>
-    </form>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <ul>
-                {% for category, message in messages %}
-                    <li style="color:red">{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
-</body>
-</html>
+      </div>
+    {% endif %}
+  {% endwith %}
+{% endblock %}
